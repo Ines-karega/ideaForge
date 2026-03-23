@@ -204,6 +204,41 @@ Base your analysis on this real data.`;
   });
 }
 
+// ============================================================
+//  VALIDATE ENDPOINT
+// ============================================================
+app.post('/api/validate', async (req, res) => {
+  const { idea } = req.body;
+
+  if (!idea || typeof idea !== 'string' || idea.trim().length < 5) {
+    return res.status(400).json({ error: 'Please provide a valid idea (at least 5 characters).' });
+  }
+
+  const sanitizedIdea = idea.trim().substring(0, 500);
+
+  try {
+    const [githubRepos, stackQuestions] = await Promise.all([
+      searchGitHub(sanitizedIdea),
+      searchStackExchange(sanitizedIdea),
+    ]);
+
+    const analysis = await analyzeWithGroq(sanitizedIdea, githubRepos, stackQuestions);
+
+    res.json({
+      idea: sanitizedIdea,
+      github_repos: githubRepos,
+      stack_questions: stackQuestions,
+      scores: analysis.scores,
+      difficulty: analysis.difficulty,
+      tech_stack: analysis.tech_stack,
+      suggestions: analysis.suggestions,
+    });
+  } catch (err) {
+    console.error('Validation error:', err.message);
+    res.status(500).json({ error: err.message || 'Internal server error. Please try again.' });
+  }
+});
+
 // Health check endpoint (for load balancer)
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
