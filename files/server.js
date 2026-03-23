@@ -101,6 +101,109 @@ async function searchStackExchange(query) {
   }
 }
 
+// ============================================================
+//  Groq AI Analysis
+// ============================================================
+async function analyzeWithGroq(idea, githubRepos, stackQuestions) {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) throw new Error('GROQ_API_KEY not set in environment');
+
+  const reposSummary = githubRepos.length
+    ? githubRepos.map((r) => `- ${r.full_name}: ${r.stargazers_count} stars, ${r.language}`).join('\n')
+    : 'No repositories found.';
+
+  const qaSummary = stackQuestions.length
+    ? stackQuestions.map((q) => `- "${q.title}" (${q.score} votes, ${q.answer_count} answers)`).join('\n')
+    : 'No discussions found.';
+
+  const systemPrompt = `You are a smart project idea validator that helps students and developers evaluate project concepts using real data.
+You receive: the project idea, actual GitHub repositories found, and actual Stack Exchange questions found.
+Analyze all provided data and return ONLY valid JSON — no markdown, no backticks, no preamble.
+
+Return exactly this JSON structure:
+{
+  "scores": {
+    "market_demand": <0-100 integer based on Stack Exchange activity and GitHub stars>,
+    "market_label": "<Low|Moderate|High|Very High>",
+    "originality": <0-100 integer based on how many similar GitHub repos exist>,
+    "originality_label": "<Very Common|Common|Somewhat Unique|Unique>",
+    "feasibility": <0-100 integer based on complexity signals from repos and questions>,
+    "feasibility_label": "<Complex|Moderate|Achievable|Easy>"
+  },
+  "difficulty": {
+    "level": "<Beginner|Intermediate|Advanced>",
+    "reason": "<2-3 sentences explaining the difficulty based on the real data found>"
+  },
+  "tech_stack": [
+    { "name": "<technology>", "category": "<Language|Framework|Library|Database|API|Tool>" },
+    { "name": "<technology>", "category": "<Language|Framework|Library|Database|API|Tool>" },
+    { "name": "<technology>", "category": "<Language|Framework|Library|Database|API|Tool>" },
+    { "name": "<technology>", "category": "<Language|Framework|Library|Database|API|Tool>" },
+    { "name": "<technology>", "category": "<Language|Framework|Library|Database|API|Tool>" },
+    { "name": "<technology>", "category": "<Language|Framework|Library|Database|API|Tool>" }
+  ],
+  "suggestions": [
+    "<specific actionable improvement suggestion>",
+    "<specific actionable improvement suggestion>",
+    "<specific actionable improvement suggestion>",
+    "<specific actionable improvement suggestion>"
+  ]
+}`;
+
+  const userMsg = `Validate this project idea: "${idea}"
+
+Real GitHub repositories found:
+${reposSummary}
+
+Real Stack Exchange questions found:
+${qaSummary}
+
+Base your analysis on this real data.`;
+
+  const body = JSON.stringify({
+    model: 'llama-3.3-70b-versatile',
+    max_tokens: 1000,
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userMsg }
+    ],
+  });
+
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'api.groq.com',
+      path: '/openai/v1/chat/completions',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Length': Buffer.byteLength(body),
+      },
+    };
+
+    const req = https.request(options, (res) => {
+      let rawBody = '';
+      res.on('data', (c) => (rawBody += c));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(rawBody);
+          if (parsed.error) return reject(new Error(parsed.error.message));
+          const text = parsed.choices[0].message.content;
+          const clean = text.replace(/```json|```/g, '').trim();
+          resolve(JSON.parse(clean));
+        } catch (e) {
+          reject(new Error('Failed to parse Groq response: ' + e.message));
+        }
+      });
+    });
+
+    req.on('error', reject);
+    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Groq API timed out')); });
+    req.write(body);
+    req.end();
+  });
+}
+
 // Health check endpoint (for load balancer)
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
