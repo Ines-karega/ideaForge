@@ -76,6 +76,31 @@ async function searchGitHub(query) {
   }
 }
 
+// ============================================================
+//  Stack Exchange API
+// ============================================================
+async function searchStackExchange(query) {
+  const encoded = encodeURIComponent(query);
+  const url = `https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=votes&q=${encoded}&site=stackoverflow&pagesize=5&filter=default`;
+
+  try {
+    const { status, data } = await httpsGet(url);
+    if (status !== 200) throw new Error('Stack Exchange API error: ' + status);
+    return (data.items || []).map((q) => ({
+      title: q.title,
+      link: q.link,
+      score: q.score,
+      answer_count: q.answer_count,
+      view_count: q.view_count,
+      is_answered: q.is_answered,
+      tags: q.tags,
+    }));
+  } catch (err) {
+    console.error('Stack Exchange fetch error:', err.message);
+    return [];
+  }
+}
+
 // Health check endpoint (for load balancer)
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
