@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IdeaForge — Smart Project Idea Validator</title>
+<style>
+  body {
+    font-family: sans-serif;
+    max-width: 860px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background: #0a0f14;
+    color: #e2e8f0;
+  }
+  h1 { font-size: 2rem; margin-bottom: 8px; }
+  p.subtitle { color: #64748b; margin-bottom: 24px; }
+  textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    background: #111820;
+    color: #e2e8f0;
+    border: 1px solid #1e2d3d;
+    border-radius: 10px;
+    resize: none;
+  }
+  button {
+    margin-top: 12px;
+    padding: 10px 28px;
+    background: #00d4ff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  #errorBox { color: #ef4444; margin-top: 12px; font-size: 0.9rem; }
+  #loading { display: none; margin-top: 24px; color: #64748b; }
+  #results { display: none; margin-top: 32px; }
+  #results h2 { font-size: 1.4rem; margin-bottom: 16px; }
+  pre { background: #111820; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+<h1>IdeaForge</h1>
+<p class="subtitle">Validate your project idea using live GitHub and Stack Exchange data, powered by AI analysis.</p>
+
+<div>
+  <textarea id="ideaInput" rows="3" placeholder="Describe your project idea, e.g. AI chatbot for healthcare..."></textarea>
+  <br>
+  <button id="validateBtn" onclick="validateIdea()">VALIDATE</button>
+</div>
+
+<div id="errorBox"></div>
+<div id="loading">Fetching live data and analyzing your idea…</div>
+
+<div id="results">
+  <h2>Analysis Results</h2>
+  <div id="resultsContent"></div>
+</div>
+
+<script>
+async function validateIdea() {
+  const idea = document.getElementById('ideaInput').value.trim();
+  const errorBox = document.getElementById('errorBox');
+  const loading = document.getElementById('loading');
+  const results = document.getElementById('results');
+  const btn = document.getElementById('validateBtn');
+
+  errorBox.textContent = '';
+  results.style.display = 'none';
+
+  if (!idea || idea.length < 5) {
+    errorBox.textContent = 'Please enter a project idea (at least 5 characters).';
+    return;
+  }
+
+  btn.disabled = true;
+  loading.style.display = 'block';
+
+  try {
+    const res = await fetch('/api/validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idea }),
+    });
+    const data = await res.json();
+    if (data.error) {
+      errorBox.textContent = data.error;
+    } else {
+      document.getElementById('resultsContent').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+      results.style.display = 'block';
+    }
+  } catch (err) {
+    errorBox.textContent = 'Something went wrong. Please try again.';
+  } finally {
+    btn.disabled = false;
+    loading.style.display = 'none';
+  }
+}
+
+document.getElementById('ideaInput').addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'Enter') validateIdea();
+});
+</script>
+</body>
+</html>
