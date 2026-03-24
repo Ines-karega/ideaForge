@@ -43,230 +43,126 @@
     z-index: 0;
   }
 
-  .orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(120px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.12;
-  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.12; }
   .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -100px; }
   .orb-2 { width: 400px; height: 400px; background: var(--accent2); bottom: -100px; left: -100px; }
 
-  .container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 40px 24px 100px;
-    position: relative;
-    z-index: 1;
-  }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 100px; position: relative; z-index: 1; }
 
   header { text-align: center; margin-bottom: 52px; }
 
   .logo-bar {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 24px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 8px 20px 8px 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.08em;
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 24px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 100px;
+    padding: 8px 20px 8px 12px; font-family: 'DM Mono', monospace; font-size: 12px;
+    color: var(--accent); letter-spacing: 0.08em;
   }
 
-  .logo-dot {
-    width: 8px; height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
+  .logo-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
-  }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
 
   h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2.4rem, 6vw, 4rem);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    font-family: 'Syne', sans-serif; font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800;
+    line-height: 1.05; letter-spacing: -0.02em;
     background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     margin-bottom: 16px;
   }
 
-  .subtitle {
-    color: var(--muted);
-    font-size: 1.05rem;
-    font-weight: 300;
-    max-width: 540px;
-    margin: 0 auto;
-    line-height: 1.7;
-  }
+  .subtitle { color: var(--muted); font-size: 1.05rem; font-weight: 300; max-width: 540px; margin: 0 auto; line-height: 1.7; }
 
-  .api-badges {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
+  .api-badges { display: flex; gap: 8px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+  .api-badge { background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 4px 12px; font-size: 0.7rem; font-family: 'DM Mono', monospace; color: var(--muted); }
 
-  .api-badge {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 4px 12px;
-    font-size: 0.7rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-  }
+  .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px; margin-bottom: 20px; position: relative; overflow: hidden; }
+  .input-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
 
-  .input-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 28px;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-  }
+  .input-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; display: block; }
+  .input-row { display: flex; gap: 12px; align-items: flex-start; }
 
-  .input-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-
-  .input-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-
-  textarea {
-    flex: 1;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    padding: 16px;
-    resize: none;
-    min-height: 90px;
-    line-height: 1.6;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
+  textarea { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 1rem; padding: 16px; resize: none; min-height: 90px; line-height: 1.6; outline: none; transition: border-color 0.2s; }
   textarea:focus { border-color: var(--accent); }
   textarea::placeholder { color: var(--dim); }
 
   .btn-validate {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    padding: 0 24px;
-    min-height: 90px;
-    width: 140px;
-    transition: opacity 0.2s, transform 0.15s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; border-radius: 12px;
+    color: #fff; font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em;
+    cursor: pointer; padding: 0 24px; min-height: 90px; width: 140px;
+    transition: opacity 0.2s, transform 0.15s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
   }
-
   .btn-validate:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
   .btn-validate:disabled { opacity: 0.5; cursor: not-allowed; }
   .btn-icon { font-size: 1.4rem; }
 
-  .examples {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 16px;
-    align-items: center;
-  }
-
-  .examples-label {
-    font-size: 0.75rem;
-    color: var(--dim);
-    font-family: 'DM Mono', monospace;
-  }
-
-  .example-chip {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 5px 14px;
-    font-size: 0.78rem;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'DM Mono', monospace;
-  }
-
+  .examples { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; align-items: center; }
+  .examples-label { font-size: 0.75rem; color: var(--dim); font-family: 'DM Mono', monospace; }
+  .example-chip { background: var(--bg); border: 1px solid var(--border); border-radius: 100px; padding: 5px 14px; font-size: 0.78rem; color: var(--muted); cursor: pointer; transition: all 0.2s; font-family: 'DM Mono', monospace; }
   .example-chip:hover { border-color: var(--accent); color: var(--accent); }
 
-  .error-box {
-    background: rgba(239,68,68,0.08);
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 12px;
-    padding: 14px 18px;
-    color: var(--danger);
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-    display: none;
-  }
+  .error-box { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 12px; padding: 14px 18px; color: var(--danger); font-size: 0.9rem; margin-bottom: 20px; display: none; }
 
-  #loading {
-    display: none;
-    text-align: center;
-    padding: 60px 20px;
-  }
-
-  .loading-ring {
-    width: 48px;
-    height: 48px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-    margin: 0 auto 24px;
-  }
-
+  #loading { display: none; text-align: center; padding: 60px 20px; }
+  .loading-ring { width: 48px; height: 48px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 24px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  .loading-steps { list-style: none; text-align: left; display: inline-block; margin-top: 16px; }
+  .step-item { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--dim); padding: 4px 0; font-family: 'DM Mono', monospace; }
+  .step-item.active { color: var(--accent); }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); flex-shrink: 0; }
+  .step-item.active .step-dot { background: var(--accent); }
+
   #results { display: none; }
+
+  .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+  .idea-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 4px 12px; font-size: 0.82rem; font-family: 'DM Mono', monospace; color: var(--accent); }
+  .btn-reset { background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: 0.82rem; padding: 6px 14px; cursor: pointer; transition: all 0.2s; font-family: 'DM Mono', monospace; }
+  .btn-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+  .score-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .score-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .score-value { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .score-sublabel { font-size: 0.75rem; color: var(--muted); margin-bottom: 12px; }
+  .score-bar-wrap { background: var(--bg); border-radius: 4px; height: 4px; overflow: hidden; }
+  .score-bar-fill { height: 4px; border-radius: 4px; width: 0; transition: width 0.8s ease; }
+
+  .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 14px; }
+  .section-title { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+  .repo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+  .repo-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-decoration: none; display: block; transition: border-color 0.2s; }
+  .repo-card:hover { border-color: var(--accent); }
+  .repo-title { font-family: 'DM Mono', monospace; font-size: 0.82rem; color: var(--accent); margin-bottom: 4px; }
+  .repo-desc { font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; line-height: 1.5; }
+  .repo-meta { display: flex; gap: 12px; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--dim); flex-wrap: wrap; }
+  .meta-badge { display: flex; align-items: center; gap: 4px; }
+
+  .qa-list { display: flex; flex-direction: column; gap: 8px; }
+  .qa-item { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; text-decoration: none; transition: border-color 0.2s; }
+  .qa-item:hover { border-color: var(--warn); }
+  .qa-title { font-size: 0.8rem; line-height: 1.5; color: var(--text); flex: 1; }
+  .qa-score { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--accent3); white-space: nowrap; padding-top: 2px; }
+
+  .diff-badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 100px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 12px; border: 1px solid; }
+  .diff-beginner { color: var(--accent3); border-color: var(--accent3); background: rgba(16,185,129,0.08); }
+  .diff-intermediate { color: var(--warn); border-color: var(--warn); background: rgba(245,158,11,0.08); }
+  .diff-advanced { color: var(--danger); border-color: var(--danger); background: rgba(239,68,68,0.08); }
+  .diff-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .stack-tag { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--text); display: flex; align-items: center; gap: 6px; transition: all 0.2s; cursor: default; }
+  .stack-tag:hover { border-color: var(--accent2); color: var(--accent2); }
+  .stack-cat { font-size: 0.65rem; color: var(--dim); }
+
+  .suggestion-list { display: flex; flex-direction: column; gap: 10px; }
+  .suggestion-item { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent2); border-radius: 0 10px 10px 0; padding: 12px 16px; font-size: 0.85rem; line-height: 1.6; color: var(--muted); }
+
+  @media (max-width: 600px) {
+    .score-row { grid-template-columns: 1fr; }
+    .input-row { flex-direction: column; }
+    .btn-validate { width: 100%; min-height: 52px; flex-direction: row; }
+  }
 </style>
 </head>
 <body>
@@ -275,17 +171,15 @@
 <div class="orb orb-2"></div>
 
 <div class="container">
+
   <header>
-    <div class="logo-bar">
-      <div class="logo-dot"></div>
-      IDEAFORGE · SMART PROJECT VALIDATOR
-    </div>
+    <div class="logo-bar"><div class="logo-dot"></div>IDEAFORGE · SMART PROJECT VALIDATOR</div>
     <h1>Validate Your<br>Project Idea</h1>
     <p class="subtitle">Submit any project concept and get real-world analysis — live GitHub data, Stack Exchange discussions, difficulty estimation, and expert recommendations.</p>
     <div class="api-badges">
       <span class="api-badge">⚡ GitHub API</span>
       <span class="api-badge">💬 Stack Exchange API</span>
-      <span class="api-badge">🤖 Claude AI Analysis</span>
+      <span class="api-badge">🤖 Groq AI Analysis</span>
     </div>
   </header>
 
@@ -308,16 +202,110 @@
   </div>
 
   <div class="error-box" id="errorBox"></div>
+
   <div id="loading">
     <div class="loading-ring"></div>
-    <p style="color:var(--muted);font-size:0.9rem;">Fetching live data &amp; analyzing your idea…</p>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:16px;">Fetching live data &amp; analyzing your idea…</p>
+    <ul class="loading-steps" id="loadingSteps">
+      <li class="step-item" id="step1"><span class="step-dot"></span>Querying GitHub API for similar repositories</li>
+      <li class="step-item" id="step2"><span class="step-dot"></span>Fetching Stack Exchange discussions</li>
+      <li class="step-item" id="step3"><span class="step-dot"></span>Estimating difficulty from real project data</li>
+      <li class="step-item" id="step4"><span class="step-dot"></span>Generating AI-powered recommendations</li>
+      <li class="step-item" id="step5"><span class="step-dot"></span>Building tech stack suggestions</li>
+    </ul>
   </div>
-  <div id="results"></div>
+
+  <div id="results">
+    <div class="results-header">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <span style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;">Analysis Complete</span>
+        <div class="idea-tag" id="resultIdea"></div>
+      </div>
+      <button class="btn-reset" onclick="resetForm()">↩ New idea</button>
+    </div>
+
+    <div class="score-row">
+      <div class="score-card">
+        <div class="score-label">Market Demand</div>
+        <div class="score-value" id="scoreMarket" style="color:var(--accent)">—</div>
+        <div class="score-sublabel" id="scoreMarketLabel">—</div>
+        <div class="score-bar-wrap"><div class="score-bar-fill" id="barMarket" style="background:var(--accent)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Originality</div>
+        <div class="score-value" id="scoreOrig" style="color:var(--accent2)">—</div>
+        <div class="score-sublabel" id="scoreOrigLabel">—</div>
+        <div class="score-bar-wrap"><div class="score-bar-fill" id="barOrig" style="background:var(--accent2)"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Feasibility</div>
+        <div class="score-value" id="scoreFeas" style="color:var(--accent3)">—</div>
+        <div class="score-sublabel" id="scoreFeasLabel">—</div>
+        <div class="score-bar-wrap"><div class="score-bar-fill" id="barFeas" style="background:var(--accent3)"></div></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">⚡ GitHub Repositories <span id="repoCount" style="color:var(--dim)"></span></div>
+      <div class="repo-grid" id="repoGrid"></div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">💬 Stack Exchange Discussions</div>
+      <div class="qa-list" id="qaList"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+      <div class="section-card">
+        <div class="section-title">⚖️ Difficulty</div>
+        <div id="difficultyContent"></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">🧰 Suggested Tech Stack</div>
+        <div class="stack-grid" id="stackGrid"></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">💡 Improvement Suggestions</div>
+      <div class="suggestion-list" id="suggestionList"></div>
+    </div>
+  </div>
+
 </div>
 
 <script>
 function fillExample(text) {
   document.getElementById('ideaInput').value = text;
+  document.getElementById('ideaInput').focus();
+}
+
+function resetForm() {
+  document.getElementById('ideaInput').value = '';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('errorBox').style.display = 'none';
+  document.getElementById('ideaInput').focus();
+}
+
+let stepTimer;
+function startSteps() {
+  const steps = ['step1','step2','step3','step4','step5'];
+  let i = 0;
+  stepTimer = setInterval(() => {
+    if (i < steps.length) {
+      document.getElementById(steps[i]).classList.add('active');
+      i++;
+    } else {
+      clearInterval(stepTimer);
+    }
+  }, 1800);
+}
+
+function stopSteps() {
+  clearInterval(stepTimer);
+  ['step1','step2','step3','step4','step5'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
 }
 
 async function validateIdea() {
@@ -338,6 +326,7 @@ async function validateIdea() {
 
   btn.disabled = true;
   loading.style.display = 'block';
+  startSteps();
 
   try {
     const res = await fetch('/api/validate', {
@@ -350,8 +339,7 @@ async function validateIdea() {
       errorBox.textContent = data.error;
       errorBox.style.display = 'block';
     } else {
-      results.innerHTML = '<pre style="background:var(--surface);padding:20px;border-radius:12px;overflow-x:auto;font-size:0.78rem;">' + JSON.stringify(data, null, 2) + '</pre>';
-      results.style.display = 'block';
+      renderResults(data);
     }
   } catch (err) {
     errorBox.textContent = 'Something went wrong. Please try again.';
@@ -359,7 +347,65 @@ async function validateIdea() {
   } finally {
     btn.disabled = false;
     loading.style.display = 'none';
+    stopSteps();
   }
+}
+
+function renderResults(data) {
+  document.getElementById('resultIdea').textContent = data.idea;
+
+  // Scores
+  const s = data.scores;
+  document.getElementById('scoreMarket').textContent = s.market_demand;
+  document.getElementById('scoreMarketLabel').textContent = s.market_label;
+  document.getElementById('barMarket').style.width = s.market_demand + '%';
+
+  document.getElementById('scoreOrig').textContent = s.originality;
+  document.getElementById('scoreOrigLabel').textContent = s.originality_label;
+  document.getElementById('barOrig').style.width = s.originality + '%';
+
+  document.getElementById('scoreFeas').textContent = s.feasibility;
+  document.getElementById('scoreFeasLabel').textContent = s.feasibility_label;
+  document.getElementById('barFeas').style.width = s.feasibility + '%';
+
+  // GitHub Repos
+  const repoGrid = document.getElementById('repoGrid');
+  document.getElementById('repoCount').textContent = `(${data.github_repos.length})`;
+  repoGrid.innerHTML = data.github_repos.map(r => `
+    <a class="repo-card" href="${r.html_url}" target="_blank" rel="noopener">
+      <div class="repo-title">${r.full_name}</div>
+      <div class="repo-desc">${r.description || 'No description'}</div>
+      <div class="repo-meta">
+        <span class="meta-badge">⭐ ${r.stargazers_count.toLocaleString()}</span>
+        <span class="meta-badge">🔀 ${r.forks_count.toLocaleString()}</span>
+        ${r.language ? `<span class="meta-badge">◆ ${r.language}</span>` : ''}
+      </div>
+    </a>`).join('');
+
+  // Stack Exchange
+  document.getElementById('qaList').innerHTML = data.stack_questions.map(q => `
+    <a class="qa-item" href="${q.link}" target="_blank" rel="noopener">
+      <span class="qa-title">${q.title}</span>
+      <span class="qa-score">▲ ${q.score} · ${q.answer_count} ans</span>
+    </a>`).join('');
+
+  // Difficulty
+  const d = data.difficulty;
+  const cls = { Beginner: 'diff-beginner', Intermediate: 'diff-intermediate', Advanced: 'diff-advanced' }[d.level] || 'diff-intermediate';
+  document.getElementById('difficultyContent').innerHTML = `
+    <div class="diff-badge ${cls}">${d.level}</div>
+    <p class="diff-desc">${d.reason}</p>`;
+
+  // Tech Stack
+  document.getElementById('stackGrid').innerHTML = data.tech_stack.map(t => `
+    <div class="stack-tag">${t.name} <span class="stack-cat">${t.category}</span></div>`).join('');
+
+  // Suggestions
+  document.getElementById('suggestionList').innerHTML = data.suggestions.map(s => `
+    <div class="suggestion-item">${s}</div>`).join('');
+
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 document.getElementById('ideaInput').addEventListener('keydown', (e) => {
