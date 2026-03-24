@@ -4,66 +4,322 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>IdeaForge — Smart Project Idea Validator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
+  :root {
+    --bg: #080c10;
+    --surface: #0e1419;
+    --surface2: #141b22;
+    --border: #1e2d3d;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --dim: #334155;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
-    font-family: sans-serif;
-    max-width: 860px;
-    margin: 40px auto;
-    padding: 0 20px;
-    background: #0a0f14;
-    color: #e2e8f0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
-  h1 { font-size: 2rem; margin-bottom: 8px; }
-  p.subtitle { color: #64748b; margin-bottom: 24px; }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.12;
+  }
+  .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -100px; }
+  .orb-2 { width: 400px; height: 400px; background: var(--accent2); bottom: -100px; left: -100px; }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header { text-align: center; margin-bottom: 52px; }
+
+  .logo-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 20px 8px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1.05rem;
+    font-weight: 300;
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .api-badges {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .api-badge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+
+  .input-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .input-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .input-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
   textarea {
-    width: 100%;
-    padding: 12px;
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
     font-size: 1rem;
-    background: #111820;
-    color: #e2e8f0;
-    border: 1px solid #1e2d3d;
-    border-radius: 10px;
+    padding: 16px;
     resize: none;
+    min-height: 90px;
+    line-height: 1.6;
+    outline: none;
+    transition: border-color 0.2s;
   }
-  button {
-    margin-top: 12px;
-    padding: 10px 28px;
-    background: #00d4ff;
-    color: #000;
+
+  textarea:focus { border-color: var(--accent); }
+  textarea::placeholder { color: var(--dim); }
+
+  .btn-validate {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
     font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    padding: 0 24px;
+    min-height: 90px;
+    width: 140px;
+    transition: opacity 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
-  button:disabled { opacity: 0.5; cursor: not-allowed; }
-  #errorBox { color: #ef4444; margin-top: 12px; font-size: 0.9rem; }
-  #loading { display: none; margin-top: 24px; color: #64748b; }
-  #results { display: none; margin-top: 32px; }
-  #results h2 { font-size: 1.4rem; margin-bottom: 16px; }
-  pre { background: #111820; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.8rem; }
+
+  .btn-validate:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
+  .btn-validate:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-icon { font-size: 1.4rem; }
+
+  .examples {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    align-items: center;
+  }
+
+  .examples-label {
+    font-size: 0.75rem;
+    color: var(--dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .example-chip {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .example-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+  .error-box {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: var(--danger);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  #loading {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .loading-ring {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin: 0 auto 24px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #results { display: none; }
 </style>
 </head>
 <body>
 
-<h1>IdeaForge</h1>
-<p class="subtitle">Validate your project idea using live GitHub and Stack Exchange data, powered by AI analysis.</p>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-<div>
-  <textarea id="ideaInput" rows="3" placeholder="Describe your project idea, e.g. AI chatbot for healthcare..."></textarea>
-  <br>
-  <button id="validateBtn" onclick="validateIdea()">VALIDATE</button>
-</div>
+<div class="container">
+  <header>
+    <div class="logo-bar">
+      <div class="logo-dot"></div>
+      IDEAFORGE · SMART PROJECT VALIDATOR
+    </div>
+    <h1>Validate Your<br>Project Idea</h1>
+    <p class="subtitle">Submit any project concept and get real-world analysis — live GitHub data, Stack Exchange discussions, difficulty estimation, and expert recommendations.</p>
+    <div class="api-badges">
+      <span class="api-badge">⚡ GitHub API</span>
+      <span class="api-badge">💬 Stack Exchange API</span>
+      <span class="api-badge">🤖 Claude AI Analysis</span>
+    </div>
+  </header>
 
-<div id="errorBox"></div>
-<div id="loading">Fetching live data and analyzing your idea…</div>
+  <div class="input-card">
+    <span class="input-label">↳ Describe your project idea</span>
+    <div class="input-row">
+      <textarea id="ideaInput" placeholder="e.g. AI chatbot for healthcare, blockchain-based voting system, real-time collaborative code editor..." rows="3"></textarea>
+      <button class="btn-validate" id="validateBtn" onclick="validateIdea()">
+        <span class="btn-icon">⚡</span>
+        VALIDATE
+      </button>
+    </div>
+    <div class="examples">
+      <span class="examples-label">try:</span>
+      <div class="example-chip" onclick="fillExample('AI chatbot for mental health support')">AI mental health chatbot</div>
+      <div class="example-chip" onclick="fillExample('Blockchain supply chain tracker')">blockchain supply chain</div>
+      <div class="example-chip" onclick="fillExample('Real-time collaborative code editor')">collaborative code editor</div>
+      <div class="example-chip" onclick="fillExample('Plant disease detection using computer vision')">plant disease detection</div>
+    </div>
+  </div>
 
-<div id="results">
-  <h2>Analysis Results</h2>
-  <div id="resultsContent"></div>
+  <div class="error-box" id="errorBox"></div>
+  <div id="loading">
+    <div class="loading-ring"></div>
+    <p style="color:var(--muted);font-size:0.9rem;">Fetching live data &amp; analyzing your idea…</p>
+  </div>
+  <div id="results"></div>
 </div>
 
 <script>
+function fillExample(text) {
+  document.getElementById('ideaInput').value = text;
+}
+
 async function validateIdea() {
   const idea = document.getElementById('ideaInput').value.trim();
   const errorBox = document.getElementById('errorBox');
@@ -71,11 +327,12 @@ async function validateIdea() {
   const results = document.getElementById('results');
   const btn = document.getElementById('validateBtn');
 
-  errorBox.textContent = '';
+  errorBox.style.display = 'none';
   results.style.display = 'none';
 
   if (!idea || idea.length < 5) {
     errorBox.textContent = 'Please enter a project idea (at least 5 characters).';
+    errorBox.style.display = 'block';
     return;
   }
 
@@ -91,12 +348,14 @@ async function validateIdea() {
     const data = await res.json();
     if (data.error) {
       errorBox.textContent = data.error;
+      errorBox.style.display = 'block';
     } else {
-      document.getElementById('resultsContent').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+      results.innerHTML = '<pre style="background:var(--surface);padding:20px;border-radius:12px;overflow-x:auto;font-size:0.78rem;">' + JSON.stringify(data, null, 2) + '</pre>';
       results.style.display = 'block';
     }
   } catch (err) {
     errorBox.textContent = 'Something went wrong. Please try again.';
+    errorBox.style.display = 'block';
   } finally {
     btn.disabled = false;
     loading.style.display = 'none';
