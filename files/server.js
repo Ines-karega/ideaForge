@@ -211,7 +211,7 @@ app.post('/api/validate', async (req, res) => {
   const { idea } = req.body;
 
   if (!idea || typeof idea !== 'string' || idea.trim().length < 5) {
-    return res.status(400).json({ error: 'Please provide a valid idea (at least 5 characters).' });
+    return res.status(400).json({ error: 'Please provide a valid project idea (at least 5 characters).' });
   }
 
   const sanitizedIdea = idea.trim().substring(0, 500);
