@@ -49,7 +49,7 @@ function httpsGet(url, headers = {}) {
 // ============================================================
 async function searchGitHub(query) {
   const encodedQuery = encodeURIComponent(query);
-  const url = `https://api.github.com/search/repositories?q=${encodedQuery}&sort=stars&order=desc&per_page=5`;
+  const url = `https://api.github.com/search/repositories?q=${encodedQuery}&sort=stars&order=desc&per_page=6`;
 
   const headers = {};
   if (process.env.GITHUB_TOKEN) {
