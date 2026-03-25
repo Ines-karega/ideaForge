@@ -81,7 +81,7 @@ async function searchGitHub(query) {
 // ============================================================
 async function searchStackExchange(query) {
   const encoded = encodeURIComponent(query);
-  const url = `https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=votes&q=${encoded}&site=stackoverflow&pagesize=5&filter=default`;
+  const url = `https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=votes&q=${encoded}&site=stackoverflow&pagesize=6&filter=default`;
 
   try {
     const { status, data } = await httpsGet(url);
