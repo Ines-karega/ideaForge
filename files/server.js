@@ -198,7 +198,7 @@ Base your analysis on this real data.`;
     });
 
     req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Groq API timed out')); });
+    req.setTimeout(60000, () => { req.destroy(); reject(new Error('Groq API timed out')); });
     req.write(body);
     req.end();
   });
