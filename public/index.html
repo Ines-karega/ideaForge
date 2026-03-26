@@ -2,23 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>IdeaForge — Smart Project Idea Validator</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>IdeaForge — Project Idea Validator</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
 <style>
   :root {
-    --bg: #080c10;
-    --surface: #0e1419;
-    --surface2: #141b22;
-    --border: #1e2d3d;
-    --accent: #00d4ff;
-    --accent2: #7c3aed;
-    --accent3: #10b981;
-    --warn: #f59e0b;
-    --danger: #ef4444;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --dim: #334155;
+    --bg:            oklch(97.5% 0.008 60);
+    --surface:       oklch(99.5% 0.004 60);
+    --surface2:      oklch(94%   0.012 60);
+    --border:        oklch(88%   0.014 60);
+    --border-strong: oklch(76%   0.014 60);
+    --text:          oklch(16%   0.012 278);
+    --text-2:        oklch(38%   0.010 278);
+    --text-3:        oklch(58%   0.007 278);
+    --accent:        oklch(45%   0.225 278);
+    --accent-hover:  oklch(38%   0.225 278);
+    --accent-bg:     oklch(95%   0.045 278);
+    --accent-border: oklch(82%   0.085 278);
+    --green:         oklch(47%   0.155 148);
+    --green-bg:      oklch(95%   0.040 148);
+    --amber:         oklch(54%   0.155 55);
+    --amber-bg:      oklch(96%   0.048 55);
+    --red:           oklch(49%   0.175 25);
+    --red-bg:        oklch(96%   0.038 25);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,723 +33,1046 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     min-height: 100vh;
-    overflow-x: hidden;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(120px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.12;
-  }
-  .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -100px; }
-  .orb-2 { width: 400px; height: 400px; background: var(--accent2); bottom: -100px; left: -100px; }
-
-  .container {
-    max-width: 960px;
+  /* ===== LAYOUT ===== */
+  .page-wrap {
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 40px 24px 100px;
-    position: relative;
-    z-index: 1;
+    padding: 0 32px 80px;
   }
 
-  /* ===== HEADER ===== */
-  header { text-align: center; margin-bottom: 52px; }
+  /* ===== TOPBAR ===== */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--border);
+  }
 
-  .logo-bar {
-    display: inline-flex;
+  .wordmark {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.10em;
+    color: var(--text);
+    text-transform: uppercase;
+    display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 24px;
+  }
+
+  .wordmark-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .topbar-badges {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .topbar-badge {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-3);
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 8px 20px 8px 12px;
+    border-radius: 4px;
+    padding: 5px 11px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 68px 0 52px;
+    max-width: 620px;
+  }
+
+  .hero-eyebrow {
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--accent);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .logo-dot {
-    width: 8px; height: 8px;
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 22px;
+    height: 1px;
     background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
+    flex-shrink: 0;
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2.4rem, 6vw, 4rem);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent2) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 16px;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 22px;
   }
 
-  .subtitle {
-    color: var(--muted);
-    font-size: 1.05rem;
-    font-weight: 300;
-    max-width: 540px;
-    margin: 0 auto;
-    line-height: 1.7;
-  }
-
-  .api-badges {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
-
-  .api-badge {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 4px 12px;
-    font-size: 0.7rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--muted);
-  }
-
-  /* ===== INPUT CARD ===== */
-  .input-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 28px;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .input-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-
-  .input-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
+  h1 em {
+    font-style: italic;
     color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: block;
   }
 
-  .input-row {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-2);
+    line-height: 1.68;
+    max-width: 500px;
+  }
+
+  /* ===== INPUT SECTION ===== */
+  .input-section {
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .input-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.18s;
+  }
+
+  .input-wrap:focus-within {
+    border-color: var(--accent-border);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+  }
+
+  .input-top {
+    padding: 20px 22px 4px;
+  }
+
+  .input-field-label {
+    display: block;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+    color: var(--text-3);
+    text-transform: uppercase;
+    margin-bottom: 10px;
   }
 
   textarea {
-    flex: 1;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    padding: 16px;
-    resize: none;
-    min-height: 90px;
-    line-height: 1.6;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  textarea:focus { border-color: var(--accent); }
-  textarea::placeholder { color: var(--dim); }
-
-  .btn-validate {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: block;
+    width: 100%;
+    background: transparent;
     border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    padding: 0 24px;
-    min-height: 90px;
-    width: 140px;
-    transition: opacity 0.2s, transform 0.15s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 1.05rem;
+    padding: 0 0 16px;
+    resize: none;
+    min-height: 82px;
+    line-height: 1.65;
+    outline: none;
   }
 
-  .btn-validate:hover:not(:disabled) { opacity: 0.85; transform: translateY(-1px); }
-  .btn-validate:disabled { opacity: 0.5; cursor: not-allowed; }
+  textarea::placeholder { color: var(--text-3); }
 
-  .btn-icon { font-size: 1.4rem; }
+  .input-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 22px;
+    border-top: 1px solid var(--border);
+    gap: 12px;
+    flex-wrap: wrap;
+    background: var(--bg);
+  }
 
   .examples {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
-    margin-top: 16px;
     align-items: center;
   }
 
   .examples-label {
-    font-size: 0.75rem;
-    color: var(--dim);
+    font-size: 12px;
     font-family: 'DM Mono', monospace;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
   }
 
   .example-chip {
-    background: var(--bg);
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 5px 14px;
-    font-size: 0.78rem;
-    color: var(--muted);
+    border-radius: 5px;
+    padding: 5px 13px;
+    font-size: 13px;
+    color: var(--text-2);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.14s;
     font-family: 'DM Mono', monospace;
   }
 
-  .example-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .example-chip:hover {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-bg);
+  }
+
+  .btn-validate {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--accent);
+    color: oklch(99% 0.005 278);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 11px 22px;
+    cursor: pointer;
+    transition: background 0.14s, transform 0.1s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .btn-validate:hover:not(:disabled) { background: var(--accent-hover); }
+  .btn-validate:active:not(:disabled) { transform: translateY(1px); }
+  .btn-validate:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-validate svg { width: 14px; height: 14px; }
+
+  /* ===== ERROR ===== */
+  .error-box {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: var(--red-bg);
+    border: 1px solid oklch(82% 0.085 25);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--red);
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .error-box svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ===== LOADING ===== */
+  #loading {
+    display: none;
+    padding: 52px 0;
+  }
+
+  .loading-inner { max-width: 360px; }
+
+  .loading-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .loading-spinner {
+    width: 13px;
+    height: 13px;
+    border: 1.5px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-steps { list-style: none; }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 0;
+    font-size: 14px;
+    color: var(--text-3);
+    border-bottom: 1px solid var(--border);
+    transition: color 0.3s;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .step-item:last-child { border-bottom: none; }
+  .step-item.active { color: var(--accent); }
+
+  .step-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .step-item.active .step-indicator {
+    background: var(--accent-bg);
+    border-color: var(--accent-border);
+  }
+
+  .step-indicator-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    transition: background 0.3s;
+  }
+
+  .step-item.active .step-indicator-dot { background: var(--accent); }
+
+  /* ===== RESULTS ===== */
+  #results { display: none; padding: 52px 0 0; }
+
+  .results-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .results-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .results-eyebrow svg { width: 12px; height: 12px; }
+
+  .results-idea-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.3;
+    max-width: 640px;
+  }
+
+  .btn-reset {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text-2);
+    font-size: 14px;
+    font-family: 'Instrument Sans', sans-serif;
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: all 0.14s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .btn-reset:hover { border-color: var(--border-strong); color: var(--text); }
+  .btn-reset svg { width: 13px; height: 13px; }
+
+  /* ===== SCORES ===== */
+  .scores-section { margin-bottom: 32px; }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    margin-bottom: 14px;
+  }
+
+  .scores-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    gap: 1px;
+  }
+
+  .score-card {
+    background: var(--surface);
+    padding: 26px 24px 22px;
+  }
+
+  .score-meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    margin-bottom: 16px;
+  }
+
+  .score-value {
+    font-family: 'Fraunces', serif;
+    font-size: 3.2rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 5px;
+    letter-spacing: -0.025em;
+  }
+
+  .score-sublabel {
+    font-size: 13px;
+    color: var(--text-3);
+    margin-bottom: 18px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .score-bar-track {
+    height: 2px;
+    background: var(--surface2);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 1px;
+    width: 0;
+    transition: width 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* ===== PANEL ===== */
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    background: var(--surface);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+    flex-wrap: wrap;
+    background: var(--bg);
+  }
+
+  .panel-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .panel-title svg { width: 14px; height: 14px; color: var(--text-3); }
+
+  .panel-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--text-3);
+    padding: 2px 8px;
+    font-family: 'DM Mono', monospace;
+  }
 
   /* ===== FILTERS BAR ===== */
   .filters-bar {
     display: none;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    gap: 16px;
     align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
     flex-wrap: wrap;
   }
 
   .filter-label {
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
+    font-size: 12px;
+    color: var(--text-3);
     text-transform: uppercase;
+    letter-spacing: 0.08em;
     white-space: nowrap;
   }
 
   .filter-group {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     flex-wrap: wrap;
     flex: 1;
   }
 
   .filter-btn {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    padding: 5px 12px;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
-
-  .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.07); }
-  .filter-btn:hover:not(.active) { border-color: var(--dim); color: var(--text); }
-
-  .search-input {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    padding: 6px 12px;
-    outline: none;
-    width: 180px;
-    transition: border-color 0.2s;
-  }
-
-  .search-input:focus { border-color: var(--accent); }
-
-  /* ===== ERROR ===== */
-  .error-box {
-    background: rgba(239,68,68,0.08);
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 12px;
-    padding: 14px 18px;
-    color: var(--danger);
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-    display: none;
-  }
-
-  /* ===== LOADING ===== */
-  #loading {
-    display: none;
-    text-align: center;
-    padding: 60px 20px;
-  }
-
-  .loading-ring {
-    width: 48px;
-    height: 48px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-    margin: 0 auto 24px;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading-steps { list-style: none; text-align: left; display: inline-block; margin-top: 8px; }
-  .step-item { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--dim); padding: 5px 0; font-family: 'DM Mono', monospace; transition: color 0.3s; }
-  .step-item.active { color: var(--accent); }
-  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); flex-shrink: 0; transition: background 0.3s; }
-  .step-item.active .step-dot { background: var(--accent); }
-
-  /* ===== RESULTS ===== */
-  #results { display: none; }
-
-  .results-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .idea-tag {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 4px 12px;
-    font-size: 0.82rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--accent);
-  }
-
-  .btn-reset {
     background: transparent;
     border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--muted);
-    font-size: 0.82rem;
-    padding: 6px 14px;
-    cursor: pointer;
-    transition: all 0.2s;
+    border-radius: 5px;
+    color: var(--text-3);
     font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.14s;
   }
 
-  .btn-reset:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* ===== SCORE CARDS ===== */
-  .score-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 20px;
+  .filter-btn.active {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-bg);
   }
 
-  .score-card {
+  .filter-btn:hover:not(.active) { border-color: var(--border-strong); color: var(--text-2); }
+
+  .search-input {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    padding: 6px 11px;
+    outline: none;
+    width: 168px;
+    transition: border-color 0.14s;
   }
 
-  .score-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-  .score-value { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; line-height: 1; margin-bottom: 4px; }
-  .score-sublabel { font-size: 0.75rem; color: var(--muted); margin-bottom: 12px; }
-  .score-bar-wrap { background: var(--bg); border-radius: 4px; height: 4px; overflow: hidden; }
-  .score-bar-fill { height: 4px; border-radius: 4px; width: 0; transition: width 0.9s ease; }
+  .search-input:focus { border-color: var(--accent-border); }
+  .search-input::placeholder { color: var(--text-3); }
 
   /* ===== SORT CONTROLS ===== */
   .sort-controls {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
   }
 
   .sort-label {
     font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--dim);
+    font-size: 12px;
+    color: var(--text-3);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-right: 4px;
+    letter-spacing: 0.07em;
+    margin-right: 2px;
   }
 
   .sort-btn {
-    background: var(--bg);
+    background: transparent;
     border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--muted);
+    border-radius: 5px;
+    color: var(--text-3);
     font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    padding: 4px 10px;
+    font-size: 12px;
+    padding: 5px 12px;
     cursor: pointer;
-    transition: all 0.18s;
-  }
-
-  .sort-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.07); }
-  .sort-btn:hover:not(.active) { border-color: var(--dim); color: var(--text); }
-
-  /* ===== SECTION CARDS ===== */
-  .section-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px;
-    margin-bottom: 14px;
-  }
-
-  .section-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 14px;
+    transition: all 0.14s;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 5px;
   }
+
+  .sort-btn svg { width: 12px; height: 12px; }
+
+  .sort-btn.active {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-bg);
+  }
+
+  .sort-btn:hover:not(.active) { border-color: var(--border-strong); color: var(--text-2); }
 
   /* ===== REPO CARDS ===== */
   .repo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 10px;
+    gap: 1px;
+    background: var(--border);
   }
 
   .repo-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px;
+    background: var(--surface);
+    padding: 18px 20px;
     text-decoration: none;
-    display: block;
-    transition: border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: background 0.14s;
   }
 
-  .repo-card:hover { border-color: var(--accent); }
+  .repo-card:hover { background: var(--accent-bg); }
   .repo-card.hidden { display: none; }
 
   .repo-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.82rem;
+    font-size: 14px;
+    font-weight: 500;
     color: var(--accent);
-    margin-bottom: 4px;
+    font-family: 'DM Mono', monospace;
+    line-height: 1.3;
   }
 
   .repo-desc {
-    font-size: 0.78rem;
-    color: var(--muted);
-    margin-bottom: 8px;
-    line-height: 1.5;
+    font-size: 13.5px;
+    color: var(--text-2);
+    line-height: 1.55;
+    flex: 1;
   }
 
   .repo-meta {
     display: flex;
     gap: 12px;
     font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--dim);
+    font-size: 12px;
+    color: var(--text-3);
     flex-wrap: wrap;
+    align-items: center;
   }
 
-  .meta-badge { display: flex; align-items: center; gap: 4px; }
+  .meta-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .meta-badge svg { width: 12px; height: 12px; }
+
+  .lang-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-3);
+    flex-shrink: 0;
+  }
 
   /* ===== QA ITEMS ===== */
-  .qa-list { display: flex; flex-direction: column; gap: 8px; }
+  .qa-list { display: flex; flex-direction: column; }
 
   .qa-item {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 11px 14px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 12px;
+    gap: 20px;
+    padding: 14px 20px;
     text-decoration: none;
-    transition: border-color 0.2s;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.14s;
   }
 
-  .qa-item:hover { border-color: var(--warn); }
+  .qa-item:last-child { border-bottom: none; }
+  .qa-item:hover { background: var(--accent-bg); }
 
   .qa-title {
-    font-size: 0.8rem;
-    line-height: 1.5;
+    font-size: 14.5px;
+    line-height: 1.55;
     color: var(--text);
     flex: 1;
   }
 
-  .qa-score {
+  .qa-stats {
     font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--accent3);
+    font-size: 12px;
+    color: var(--text-3);
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     padding-top: 2px;
+    flex-shrink: 0;
   }
+
+  .qa-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .qa-stat-item svg { width: 12px; height: 12px; }
+
+  /* ===== DIFFICULTY + STACK GRID ===== */
+  .diff-stack-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .diff-stack-grid .panel { margin-bottom: 0; }
+
+  .panel-body { padding: 20px; }
 
   /* ===== DIFFICULTY ===== */
   .diff-badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: 100px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 12px;
+    gap: 7px;
+    padding: 7px 15px;
+    border-radius: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 14px;
     border: 1px solid;
   }
 
-  .diff-beginner { color: var(--accent3); border-color: var(--accent3); background: rgba(16,185,129,0.08); }
-  .diff-intermediate { color: var(--warn); border-color: var(--warn); background: rgba(245,158,11,0.08); }
-  .diff-advanced { color: var(--danger); border-color: var(--danger); background: rgba(239,68,68,0.08); }
+  .diff-badge svg { width: 13px; height: 13px; }
 
-  .diff-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .diff-beginner {
+    color: var(--green);
+    border-color: oklch(82% 0.07 148);
+    background: var(--green-bg);
+  }
+
+  .diff-intermediate {
+    color: var(--amber);
+    border-color: oklch(82% 0.07 55);
+    background: var(--amber-bg);
+  }
+
+  .diff-advanced {
+    color: var(--red);
+    border-color: oklch(82% 0.08 25);
+    background: var(--red-bg);
+  }
+
+  .diff-desc {
+    font-size: 14px;
+    color: var(--text-2);
+    line-height: 1.68;
+  }
 
   /* ===== TECH STACK ===== */
-  .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .stack-grid { display: flex; flex-wrap: wrap; gap: 6px; }
 
   .stack-tag {
     background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 6px 14px;
     font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--text);
+    font-size: 13px;
+    color: var(--text-2);
     display: flex;
     align-items: center;
-    gap: 6px;
-    transition: all 0.2s;
+    gap: 7px;
     cursor: default;
+    transition: all 0.14s;
   }
 
-  .stack-tag:hover { border-color: var(--accent2); color: var(--accent2); }
+  .stack-tag:hover {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background: var(--accent-bg);
+  }
 
   .stack-cat {
-    font-size: 0.65rem;
-    color: var(--dim);
+    font-size: 11px;
+    color: var(--text-3);
   }
 
   /* ===== SUGGESTIONS ===== */
-  .suggestion-list { display: flex; flex-direction: column; gap: 10px; }
+  .suggestion-list { display: flex; flex-direction: column; }
 
   .suggestion-item {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent2);
-    border-radius: 0 10px 10px 0;
-    padding: 12px 16px;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--muted);
+    padding: 16px 22px;
+    font-size: 14.5px;
+    line-height: 1.68;
+    color: var(--text-2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .suggestion-item:last-child { border-bottom: none; }
+
+  .suggestion-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-3);
+    padding-top: 3px;
+    min-width: 22px;
+    flex-shrink: 0;
   }
 
   /* ===== RESPONSIVE ===== */
   @media (max-width: 680px) {
-    .score-row { grid-template-columns: 1fr; }
-    .input-row { flex-direction: column; }
-    .btn-validate { width: 100%; min-height: 52px; flex-direction: row; }
-    .diff-grid { grid-template-columns: 1fr !important; }
+    .page-wrap { padding: 0 16px 60px; }
+    .scores-grid { grid-template-columns: 1fr; }
+    .diff-stack-grid { grid-template-columns: 1fr; }
+    .topbar-badges { display: none; }
+    .hero { padding: 44px 0 36px; }
+    .input-footer { flex-direction: column; align-items: flex-start; }
+    .btn-validate { width: 100%; justify-content: center; }
+    .qa-stats { display: none; }
+    .sort-controls .sort-label { display: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
+<div class="page-wrap">
 
-<div class="container">
-
-  <!-- Header -->
-  <header>
-    <div class="logo-bar">
-      <div class="logo-dot"></div>
-      IDEAFORGE · SMART PROJECT VALIDATOR
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="wordmark">
+      <div class="wordmark-dot"></div>
+      IdeaForge
     </div>
-    <h1>Validate Your<br>Project Idea</h1>
-    <p class="subtitle">Submit any project concept and get real-world analysis — live GitHub data, Stack Exchange discussions, difficulty estimation, and expert recommendations.</p>
-    <div class="api-badges">
-      <span class="api-badge">⚡ GitHub API</span>
-      <span class="api-badge">💬 Stack Exchange API</span>
-      <span class="api-badge">🤖 Claude AI Analysis</span>
+    <div class="topbar-badges">
+      <span class="topbar-badge">GitHub API</span>
+      <span class="topbar-badge">Stack Exchange</span>
+      <span class="topbar-badge">AI Analysis</span>
     </div>
   </header>
 
-  <!-- Input -->
-  <div class="input-card">
-    <span class="input-label">↳ Describe your project idea</span>
-    <div class="input-row">
-      <textarea id="ideaInput" placeholder="e.g. AI chatbot for healthcare, blockchain-based voting system, real-time collaborative code editor..." rows="3"></textarea>
-      <button class="btn-validate" id="validateBtn" onclick="validateIdea()">
-        <span class="btn-icon">⚡</span>
-        VALIDATE
-      </button>
-    </div>
-    <div class="examples">
-      <span class="examples-label">try:</span>
-      <div class="example-chip" onclick="fillExample('AI chatbot for mental health support')">AI mental health chatbot</div>
-      <div class="example-chip" onclick="fillExample('Blockchain supply chain tracker')">blockchain supply chain</div>
-      <div class="example-chip" onclick="fillExample('Real-time collaborative code editor')">collaborative code editor</div>
-      <div class="example-chip" onclick="fillExample('Plant disease detection using computer vision')">plant disease detection</div>
-    </div>
-  </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">Smart Project Validator</div>
+    <h1>Validate your<br><em>project idea</em><br>before you build.</h1>
+    <p class="hero-sub">Real-world analysis from live GitHub data, Stack Exchange discussions, difficulty estimation, and AI-powered recommendations — all in one place.</p>
+  </section>
 
-  <!-- Error -->
-  <div class="error-box" id="errorBox"></div>
+  <!-- Input -->
+  <section class="input-section">
+    <div class="input-wrap">
+      <div class="input-top">
+        <label class="input-field-label" for="ideaInput">Describe your project idea</label>
+        <textarea id="ideaInput" placeholder="e.g. AI chatbot for healthcare, blockchain-based voting system, real-time collaborative code editor..." rows="3"></textarea>
+      </div>
+      <div class="input-footer">
+        <div class="examples">
+          <span class="examples-label">Try</span>
+          <div class="example-chip" onclick="fillExample('AI chatbot for mental health support')">AI mental health chatbot</div>
+          <div class="example-chip" onclick="fillExample('Blockchain supply chain tracker')">Blockchain supply chain</div>
+          <div class="example-chip" onclick="fillExample('Real-time collaborative code editor')">Collaborative editor</div>
+          <div class="example-chip" onclick="fillExample('Plant disease detection using computer vision')">Plant disease detection</div>
+        </div>
+        <button class="btn-validate" id="validateBtn" onclick="validateIdea()">
+          <i data-lucide="zap"></i>
+          Validate idea
+        </button>
+      </div>
+    </div>
+    <div class="error-box" id="errorBox">
+      <i data-lucide="alert-circle"></i>
+      <span id="errorMsg"></span>
+    </div>
+  </section>
 
   <!-- Loading -->
   <div id="loading">
-    <div class="loading-ring"></div>
-    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:16px;">Fetching live data &amp; analyzing your idea…</p>
-    <ul class="loading-steps" id="loadingSteps">
-      <li class="step-item" id="step1"><span class="step-dot"></span>Querying GitHub API for similar repositories</li>
-      <li class="step-item" id="step2"><span class="step-dot"></span>Fetching Stack Exchange discussions</li>
-      <li class="step-item" id="step3"><span class="step-dot"></span>Estimating difficulty from real project data</li>
-      <li class="step-item" id="step4"><span class="step-dot"></span>Generating AI-powered recommendations</li>
-      <li class="step-item" id="step5"><span class="step-dot"></span>Building tech stack suggestions</li>
-    </ul>
+    <div class="loading-inner">
+      <div class="loading-label">
+        <div class="loading-spinner"></div>
+        Analyzing your idea
+      </div>
+      <ul class="loading-steps" id="loadingSteps">
+        <li class="step-item" id="step1">
+          <div class="step-indicator"><div class="step-indicator-dot"></div></div>
+          Querying GitHub repositories
+        </li>
+        <li class="step-item" id="step2">
+          <div class="step-indicator"><div class="step-indicator-dot"></div></div>
+          Fetching Stack Exchange discussions
+        </li>
+        <li class="step-item" id="step3">
+          <div class="step-indicator"><div class="step-indicator-dot"></div></div>
+          Estimating difficulty
+        </li>
+        <li class="step-item" id="step4">
+          <div class="step-indicator"><div class="step-indicator-dot"></div></div>
+          Generating AI recommendations
+        </li>
+        <li class="step-item" id="step5">
+          <div class="step-indicator"><div class="step-indicator-dot"></div></div>
+          Building tech stack suggestions
+        </li>
+      </ul>
+    </div>
   </div>
 
   <!-- Results -->
   <div id="results">
 
-    <div class="results-header">
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <span style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;">Analysis Complete</span>
-        <div class="idea-tag" id="resultIdea"></div>
+    <div class="results-meta">
+      <div>
+        <div class="results-eyebrow">
+          <i data-lucide="check-circle-2"></i>
+          Analysis complete
+        </div>
+        <div class="results-idea-title" id="resultIdea"></div>
       </div>
-      <button class="btn-reset" onclick="resetForm()">↩ New idea</button>
-    </div>
-
-    <!-- Filters / Search bar -->
-    <div class="filters-bar" id="filtersBar">
-      <span class="filter-label">Filter repos by language:</span>
-      <div class="filter-group" id="langFilters"></div>
-      <input type="text" class="search-input" id="repoSearch" placeholder="Search repos…" oninput="filterRepos()" />
+      <button class="btn-reset" onclick="resetForm()">
+        <i data-lucide="rotate-ccw"></i>
+        New idea
+      </button>
     </div>
 
     <!-- Scores -->
-    <div class="score-row">
-      <div class="score-card">
-        <div class="score-label">Market Demand</div>
-        <div class="score-value" id="scoreMarket" style="color:var(--accent)">—</div>
-        <div class="score-sublabel" id="scoreMarketLabel">—</div>
-        <div class="score-bar-wrap"><div class="score-bar-fill" id="barMarket" style="background:var(--accent)"></div></div>
-      </div>
-      <div class="score-card">
-        <div class="score-label">Originality</div>
-        <div class="score-value" id="scoreOrig" style="color:var(--accent2)">—</div>
-        <div class="score-sublabel" id="scoreOrigLabel">—</div>
-        <div class="score-bar-wrap"><div class="score-bar-fill" id="barOrig" style="background:var(--accent2)"></div></div>
-      </div>
-      <div class="score-card">
-        <div class="score-label">Feasibility</div>
-        <div class="score-value" id="scoreFeas" style="color:var(--accent3)">—</div>
-        <div class="score-sublabel" id="scoreFeasLabel">—</div>
-        <div class="score-bar-wrap"><div class="score-bar-fill" id="barFeas" style="background:var(--accent3)"></div></div>
+    <div class="scores-section">
+      <div class="section-eyebrow">Viability scores</div>
+      <div class="scores-grid">
+        <div class="score-card">
+          <div class="score-meta-label">Market Demand</div>
+          <div class="score-value" id="scoreMarket">—</div>
+          <div class="score-sublabel" id="scoreMarketLabel">—</div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" id="barMarket" style="background: var(--accent)"></div>
+          </div>
+        </div>
+        <div class="score-card">
+          <div class="score-meta-label">Originality</div>
+          <div class="score-value" id="scoreOrig">—</div>
+          <div class="score-sublabel" id="scoreOrigLabel">—</div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" id="barOrig" style="background: var(--green)"></div>
+          </div>
+        </div>
+        <div class="score-card">
+          <div class="score-meta-label">Feasibility</div>
+          <div class="score-value" id="scoreFeas">—</div>
+          <div class="score-sublabel" id="scoreFeasLabel">—</div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" id="barFeas" style="background: var(--amber)"></div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- GitHub Repos -->
-    <div class="section-card">
-      <div class="section-title">
-        ⚡ GitHub Repositories <span id="repoCount" style="color:var(--dim)"></span>
-        <div style="margin-left:auto">
-          <div class="sort-controls">
-            <span class="sort-label">Sort:</span>
-            <button class="sort-btn active" id="sortStars" onclick="sortRepos('stars')">⭐ Stars</button>
-            <button class="sort-btn" id="sortForks" onclick="sortRepos('forks')">🔀 Forks</button>
-            <button class="sort-btn" id="sortUpdated" onclick="sortRepos('updated')">🕐 Updated</button>
-          </div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i data-lucide="github"></i>
+          GitHub Repositories
+          <span class="panel-count" id="repoCount"></span>
         </div>
+        <div class="sort-controls">
+          <span class="sort-label">Sort</span>
+          <button class="sort-btn active" id="sortStars" onclick="sortRepos('stars')">
+            <i data-lucide="star"></i> Stars
+          </button>
+          <button class="sort-btn" id="sortForks" onclick="sortRepos('forks')">
+            <i data-lucide="git-fork"></i> Forks
+          </button>
+          <button class="sort-btn" id="sortUpdated" onclick="sortRepos('updated')">
+            <i data-lucide="clock"></i> Updated
+          </button>
+        </div>
+      </div>
+      <div class="filters-bar" id="filtersBar">
+        <span class="filter-label">Language</span>
+        <div class="filter-group" id="langFilters"></div>
+        <input type="text" class="search-input" id="repoSearch" placeholder="Search repos..." oninput="filterRepos()" />
       </div>
       <div class="repo-grid" id="repoGrid"></div>
     </div>
 
     <!-- Stack Exchange -->
-    <div class="section-card">
-      <div class="section-title">
-        💬 Stack Exchange Discussions
-        <div style="margin-left:auto">
-          <div class="sort-controls">
-            <span class="sort-label">Sort:</span>
-            <button class="sort-btn active" id="sortQAVotes" onclick="sortQA('votes')">▲ Votes</button>
-            <button class="sort-btn" id="sortQAAnswers" onclick="sortQA('answers')">💬 Answers</button>
-            <button class="sort-btn" id="sortQAViews" onclick="sortQA('views')">👁 Views</button>
-          </div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i data-lucide="message-square"></i>
+          Stack Exchange Discussions
+        </div>
+        <div class="sort-controls">
+          <span class="sort-label">Sort</span>
+          <button class="sort-btn active" id="sortQAVotes" onclick="sortQA('votes')">
+            <i data-lucide="arrow-up"></i> Votes
+          </button>
+          <button class="sort-btn" id="sortQAAnswers" onclick="sortQA('answers')">
+            <i data-lucide="message-circle"></i> Answers
+          </button>
+          <button class="sort-btn" id="sortQAViews" onclick="sortQA('views')">
+            <i data-lucide="eye"></i> Views
+          </button>
         </div>
       </div>
       <div class="qa-list" id="qaList"></div>
     </div>
 
     <!-- Difficulty + Tech Stack -->
-    <div class="diff-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
-      <div class="section-card" style="margin-bottom:0">
-        <div class="section-title">⚖️ Difficulty</div>
-        <div id="difficultyContent"></div>
+    <div class="diff-stack-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="bar-chart-2"></i>
+            Difficulty
+          </div>
+        </div>
+        <div class="panel-body" id="difficultyContent"></div>
       </div>
-      <div class="section-card" style="margin-bottom:0">
-        <div class="section-title">🧰 Suggested Tech Stack</div>
-        <div class="stack-grid" id="stackGrid"></div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <i data-lucide="layers"></i>
+            Suggested Tech Stack
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="stack-grid" id="stackGrid"></div>
+        </div>
       </div>
     </div>
 
     <!-- Suggestions -->
-    <div class="section-card">
-      <div class="section-title">💡 Improvement Suggestions</div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i data-lucide="lightbulb"></i>
+          Improvement Suggestions
+        </div>
+      </div>
       <div class="suggestion-list" id="suggestionList"></div>
     </div>
 
   </div><!-- /results -->
 
-</div><!-- /container -->
+</div><!-- /page-wrap -->
 
 <script>
 // ── State ──────────────────────────────────────────────────
@@ -751,6 +1081,13 @@ let allQA = [];
 let activeLang = 'all';
 let repoSortKey = 'stars';
 let qaSortKey = 'votes';
+
+// ── Lucide icon init ───────────────────────────────────────
+function initIcons() {
+  if (window.lucide) lucide.createIcons();
+}
+
+document.addEventListener('DOMContentLoaded', initIcons);
 
 // ── Helpers ────────────────────────────────────────────────
 function fillExample(text) {
@@ -764,10 +1101,11 @@ function resetForm() {
   document.getElementById('errorBox').style.display = 'none';
   document.getElementById('filtersBar').style.display = 'none';
   allRepos = []; allQA = [];
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   document.getElementById('ideaInput').focus();
 }
 
-// ── Loading steps animation ────────────────────────────────
+// ── Loading steps ──────────────────────────────────────────
 let stepTimer;
 function startSteps() {
   const ids = ['step1','step2','step3','step4','step5'];
@@ -781,22 +1119,29 @@ function startSteps() {
 
 function stopSteps() {
   clearInterval(stepTimer);
-  ['step1','step2','step3','step4','step5'].forEach(id => document.getElementById(id).classList.remove('active'));
+  ['step1','step2','step3','step4','step5'].forEach(id =>
+    document.getElementById(id).classList.remove('active'));
 }
 
 // ── Sort repos ─────────────────────────────────────────────
 function sortRepos(key) {
   repoSortKey = key;
-  ['sortStars','sortForks','sortUpdated'].forEach(id => document.getElementById(id).classList.remove('active'));
-  document.getElementById({ stars:'sortStars', forks:'sortForks', updated:'sortUpdated' }[key]).classList.add('active');
+  ['sortStars','sortForks','sortUpdated'].forEach(id =>
+    document.getElementById(id).classList.remove('active'));
+  document.getElementById({ stars:'sortStars', forks:'sortForks', updated:'sortUpdated' }[key])
+    .classList.add('active');
   renderRepoGrid();
+  initIcons();
 }
 
 function sortQA(key) {
   qaSortKey = key;
-  ['sortQAVotes','sortQAAnswers','sortQAViews'].forEach(id => document.getElementById(id).classList.remove('active'));
-  document.getElementById({ votes:'sortQAVotes', answers:'sortQAAnswers', views:'sortQAViews' }[key]).classList.add('active');
+  ['sortQAVotes','sortQAAnswers','sortQAViews'].forEach(id =>
+    document.getElementById(id).classList.remove('active'));
+  document.getElementById({ votes:'sortQAVotes', answers:'sortQAAnswers', views:'sortQAViews' }[key])
+    .classList.add('active');
   renderQAList();
+  initIcons();
 }
 
 // ── Language filter ────────────────────────────────────────
@@ -806,9 +1151,10 @@ function setLangFilter(lang) {
     b.classList.toggle('active', b.dataset.lang === lang);
   });
   renderRepoGrid();
+  initIcons();
 }
 
-function filterRepos() { renderRepoGrid(); }
+function filterRepos() { renderRepoGrid(); initIcons(); }
 
 // ── Render repos ───────────────────────────────────────────
 function renderRepoGrid() {
@@ -822,8 +1168,8 @@ function renderRepoGrid() {
   );
 
   const sorters = {
-    stars: (a, b) => b.stargazers_count - a.stargazers_count,
-    forks: (a, b) => b.forks_count - a.forks_count,
+    stars:   (a, b) => b.stargazers_count - a.stargazers_count,
+    forks:   (a, b) => b.forks_count - a.forks_count,
     updated: (a, b) => new Date(b.updated_at) - new Date(a.updated_at),
   };
   repos.sort(sorters[repoSortKey]);
@@ -832,48 +1178,55 @@ function renderRepoGrid() {
     ? repos.map(r => `
       <a class="repo-card" href="${r.html_url}" target="_blank" rel="noopener">
         <div class="repo-title">${r.full_name}</div>
-        <div class="repo-desc">${r.description || '<em style="color:var(--dim)">No description</em>'}</div>
+        <div class="repo-desc">${r.description || '<em style="color:var(--text-3)">No description</em>'}</div>
         <div class="repo-meta">
-          <span class="meta-badge">⭐ ${r.stargazers_count.toLocaleString()}</span>
-          <span class="meta-badge">🔀 ${r.forks_count.toLocaleString()}</span>
-          ${r.language ? `<span class="meta-badge">◆ ${r.language}</span>` : ''}
-          <span class="meta-badge">🐛 ${r.open_issues_count}</span>
+          <span class="meta-badge"><i data-lucide="star"></i>${r.stargazers_count.toLocaleString()}</span>
+          <span class="meta-badge"><i data-lucide="git-fork"></i>${r.forks_count.toLocaleString()}</span>
+          ${r.language ? `<span class="meta-badge"><span class="lang-dot"></span>${r.language}</span>` : ''}
+          <span class="meta-badge"><i data-lucide="circle-dot"></i>${r.open_issues_count}</span>
         </div>
       </a>`).join('')
-    : '<p style="color:var(--dim);font-size:0.85rem;padding:12px 0">No repositories match your filter.</p>';
+    : '<p style="color:var(--text-3);font-size:13px;padding:20px 20px">No repositories match your filter.</p>';
 }
 
 // ── Render QA ──────────────────────────────────────────────
 function renderQAList() {
   const sorters = {
-    votes: (a, b) => b.score - a.score,
+    votes:   (a, b) => b.score - a.score,
     answers: (a, b) => b.answer_count - a.answer_count,
-    views: (a, b) => b.view_count - a.view_count,
+    views:   (a, b) => b.view_count - a.view_count,
   };
   const qa = [...allQA].sort(sorters[qaSortKey]);
+
   document.getElementById('qaList').innerHTML = qa.length
     ? qa.map(q => `
       <a class="qa-item" href="${q.link}" target="_blank" rel="noopener">
         <span class="qa-title">${q.title}</span>
-        <span class="qa-score">▲${q.score} · ${q.answer_count} ans · ${q.view_count.toLocaleString()} views</span>
+        <span class="qa-stats">
+          <span class="qa-stat-item"><i data-lucide="arrow-up"></i>${q.score}</span>
+          <span class="qa-stat-item"><i data-lucide="message-circle"></i>${q.answer_count}</span>
+          <span class="qa-stat-item"><i data-lucide="eye"></i>${q.view_count.toLocaleString()}</span>
+        </span>
       </a>`).join('')
-    : '<p style="color:var(--dim);font-size:0.85rem;padding:12px 0">No discussions found.</p>';
+    : '<p style="color:var(--text-3);font-size:13px;padding:20px">No discussions found.</p>';
 }
 
 // ── Main validate ──────────────────────────────────────────
 async function validateIdea() {
   const idea = document.getElementById('ideaInput').value.trim();
   const errorBox = document.getElementById('errorBox');
-  const loading = document.getElementById('loading');
-  const results = document.getElementById('results');
-  const btn = document.getElementById('validateBtn');
+  const errorMsg = document.getElementById('errorMsg');
+  const loading  = document.getElementById('loading');
+  const results  = document.getElementById('results');
+  const btn      = document.getElementById('validateBtn');
 
   errorBox.style.display = 'none';
-  results.style.display = 'none';
+  results.style.display  = 'none';
 
   if (!idea || idea.length < 5) {
-    errorBox.textContent = 'Please provide a valid project idea (at least 5 characters).';
-    errorBox.style.display = 'block';
+    errorMsg.textContent = 'Please provide a valid project idea (at least 5 characters).';
+    errorBox.style.display = 'flex';
+    initIcons();
     return;
   }
 
@@ -889,14 +1242,16 @@ async function validateIdea() {
     });
     const data = await res.json();
     if (data.error) {
-      errorBox.textContent = data.error;
-      errorBox.style.display = 'block';
+      errorMsg.textContent = data.error;
+      errorBox.style.display = 'flex';
+      initIcons();
     } else {
       renderResults(data);
     }
-  } catch (err) {
-    errorBox.textContent = 'Something went wrong. Please try again.';
-    errorBox.style.display = 'block';
+  } catch {
+    errorMsg.textContent = 'Something went wrong. Please try again.';
+    errorBox.style.display = 'flex';
+    initIcons();
   } finally {
     btn.disabled = false;
     loading.style.display = 'none';
@@ -904,21 +1259,20 @@ async function validateIdea() {
   }
 }
 
-// ── Render full results ────────────────────────────────────
+// ── Render results ─────────────────────────────────────────
 function renderResults(data) {
   document.getElementById('resultIdea').textContent = data.idea;
 
-  // Scores
   const s = data.scores;
-  document.getElementById('scoreMarket').textContent = s.market_demand;
+  document.getElementById('scoreMarket').textContent    = s.market_demand;
   document.getElementById('scoreMarketLabel').textContent = s.market_label;
   setTimeout(() => { document.getElementById('barMarket').style.width = s.market_demand + '%'; }, 80);
 
-  document.getElementById('scoreOrig').textContent = s.originality;
+  document.getElementById('scoreOrig').textContent      = s.originality;
   document.getElementById('scoreOrigLabel').textContent = s.originality_label;
   setTimeout(() => { document.getElementById('barOrig').style.width = s.originality + '%'; }, 160);
 
-  document.getElementById('scoreFeas').textContent = s.feasibility;
+  document.getElementById('scoreFeas').textContent      = s.feasibility;
   document.getElementById('scoreFeasLabel').textContent = s.feasibility_label;
   setTimeout(() => { document.getElementById('barFeas').style.width = s.feasibility + '%'; }, 240);
 
@@ -926,18 +1280,17 @@ function renderResults(data) {
   allRepos = data.github_repos;
   repoSortKey = 'stars';
   activeLang = 'all';
-  document.getElementById('repoCount').textContent = `(${allRepos.length})`;
+  document.getElementById('repoCount').textContent = allRepos.length;
 
-  // Language filters
   const langs = ['all', ...new Set(allRepos.map(r => r.language).filter(Boolean))];
   document.getElementById('langFilters').innerHTML = langs.map(l =>
-    `<button class="filter-btn${l === 'all' ? ' active' : ''}" data-lang="${l}" onclick="setLangFilter('${l}')">${l === 'all' ? 'All' : l}</button>`
+    `<button class="filter-btn${l === 'all' ? ' active' : ''}" data-lang="${l}"
+      onclick="setLangFilter('${l}')">${l === 'all' ? 'All' : l}</button>`
   ).join('');
 
   renderRepoGrid();
   if (allRepos.length > 0) {
-    const fb = document.getElementById('filtersBar');
-    fb.style.display = 'flex';
+    document.getElementById('filtersBar').style.display = 'flex';
   }
 
   // QA
@@ -947,25 +1300,33 @@ function renderResults(data) {
 
   // Difficulty
   const d = data.difficulty;
-  const cls = { Beginner: 'diff-beginner', Intermediate: 'diff-intermediate', Advanced: 'diff-advanced' }[d.level] || 'diff-intermediate';
+  const cls     = { Beginner: 'diff-beginner', Intermediate: 'diff-intermediate', Advanced: 'diff-advanced' }[d.level] || 'diff-intermediate';
+  const iconMap  = { Beginner: 'circle', Intermediate: 'triangle', Advanced: 'octagon' };
+  const diffIcon = iconMap[d.level] || 'triangle';
   document.getElementById('difficultyContent').innerHTML = `
-    <div class="diff-badge ${cls}">${d.level}</div>
+    <div class="diff-badge ${cls}"><i data-lucide="${diffIcon}"></i>${d.level}</div>
     <p class="diff-desc">${d.reason}</p>`;
 
   // Tech stack
   document.getElementById('stackGrid').innerHTML = data.tech_stack
-    .map(t => `<div class="stack-tag">${t.name}<span class="stack-cat">${t.category}</span></div>`).join('');
+    .map(t => `<div class="stack-tag">${t.name}<span class="stack-cat">${t.category}</span></div>`)
+    .join('');
 
   // Suggestions
   document.getElementById('suggestionList').innerHTML = data.suggestions
-    .map(s => `<div class="suggestion-item">${s}</div>`).join('');
+    .map((s, i) => `
+      <div class="suggestion-item">
+        <span class="suggestion-num">${String(i + 1).padStart(2, '0')}</span>
+        <span>${s}</span>
+      </div>`).join('');
 
   document.getElementById('results').style.display = 'block';
+  initIcons();
   document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ── Keyboard shortcut ──────────────────────────────────────
-document.getElementById('ideaInput').addEventListener('keydown', (e) => {
+document.getElementById('ideaInput').addEventListener('keydown', e => {
   if (e.ctrlKey && e.key === 'Enter') validateIdea();
 });
 </script>
