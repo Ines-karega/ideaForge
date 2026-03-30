@@ -21,19 +21,28 @@ This solves a real problem: most people waste weeks building something that alre
 
 ---
 
-## APIs Used & Credits
+## APIs Used
 
 | API | Purpose | Docs |
 |-----|---------|------|
-| GitHub Search API : GitHub, Inc. | Finds similar repositories for the idea | [docs.github.com/en/rest/search](https://docs.github.com/en/rest/search/search) |
-| Stack Exchange API : Stack Exchange, Inc. | Fetches Stack Overflow discussions on the topic | [api.stackexchange.com/docs](https://api.stackexchange.com/docs) |
-| Groq Cloud API (Llama 3.3-70b) :Groq/Meta | AI analysis grounded in the real fetched data | [console.groq.com/docs](https://console.groq.com/docs) |
-| Lucide Icons : Lucide Contributors | UI icons | [lucide.dev](https://lucide.dev) |
-| Google Fonts : Google LLC | Fraunces, Instrument Sans, DM Mono | [fonts.google.com](https://fonts.google.com) |
-
-**Other tools:** Express.js, Node.js, PM2, Nginx, Let's Encrypt (Certbot)
+| GitHub Search API | Finds similar repositories for the idea | [docs.github.com/en/rest/search](https://docs.github.com/en/rest/search/search) |
+| Stack Exchange API | Fetches Stack Overflow discussions on the topic | [api.stackexchange.com/docs](https://api.stackexchange.com/docs) |
+| Groq Cloud API (Llama 3.3-70b) | AI analysis grounded in the real fetched data | [console.groq.com/docs](https://console.groq.com/docs) |
 
 > All API keys are stored in a `.env` file, excluded from the repository via `.gitignore`, and never exposed to the browser. The Express backend acts as a secure proxy for all external requests.
+
+---
+
+## Credits
+
+| Resource | Provider | Purpose |
+|----------|----------|---------|
+| Lucide Icons | Lucide Contributors | UI icons |
+| Google Fonts (Fraunces, Instrument Sans, DM Mono) | Google LLC | Typography |
+| Express.js | OpenJS Foundation | Backend framework |
+| PM2 | Keymetrics | Process manager |
+| Nginx | F5, Inc. | Load balancer and reverse proxy |
+| Let's Encrypt (Certbot) | Internet Security Research Group | Free SSL certificate |
 
 ---
 
