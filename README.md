@@ -196,7 +196,7 @@ ideaForge/
 ├── server.js            # Express backend : secure API proxy
 ├── .env                 # API keys (not committed)
 ├── .env.example         # Key template
-└── .gitignore
+└── .gitignore           # Excludes .env and node_modules from the repository
 ```
 
 ---
