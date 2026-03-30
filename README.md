@@ -1,15 +1,16 @@
-# IdeaForge — Smart Project Idea Validator
+# IdeaForge : Smart Project Idea Validator
 
-**Author:** Ines Karega
-**Live URL:** https://ideaforge.karega.tech
-**Demo Video:** [paste your video link here]
-**Repository:** https://github.com/Ines-karega/ideaForge
+| | |
+|---|---|
+| **Author** | Ines Karega |
+| **Live URL** | https://ideaforge.karega.tech |
+| **Repository** | https://github.com/Ines-karega/ideaForge |
 
 ---
 
 ## What It Does
 
-IdeaForge helps developers and students decide whether a project idea is worth building — before they invest time in it. Enter any idea and the app will:
+IdeaForge helps developers and students decide whether a project idea is worth building ,before they invest time in it. Enter any idea and the app will:
 
 - Check how many similar projects already exist on GitHub (originality check)
 - Measure developer interest via Stack Overflow activity (market demand)
@@ -24,11 +25,11 @@ This solves a real problem: most people waste weeks building something that alre
 
 | API | Purpose | Docs |
 |-----|---------|------|
-| GitHub Search API — GitHub, Inc. | Finds similar repositories for the idea | [docs.github.com/en/rest/search](https://docs.github.com/en/rest/search/search) |
-| Stack Exchange API — Stack Exchange, Inc. | Fetches Stack Overflow discussions on the topic | [api.stackexchange.com/docs](https://api.stackexchange.com/docs) |
-| Groq Cloud API (Llama 3.3-70b) — Groq/Meta | AI analysis grounded in the real fetched data | [console.groq.com/docs](https://console.groq.com/docs) |
-| Lucide Icons — Lucide Contributors | UI icons | [lucide.dev](https://lucide.dev) |
-| Google Fonts — Google LLC | Fraunces, Instrument Sans, DM Mono | [fonts.google.com](https://fonts.google.com) |
+| GitHub Search API : GitHub, Inc. | Finds similar repositories for the idea | [docs.github.com/en/rest/search](https://docs.github.com/en/rest/search/search) |
+| Stack Exchange API : Stack Exchange, Inc. | Fetches Stack Overflow discussions on the topic | [api.stackexchange.com/docs](https://api.stackexchange.com/docs) |
+| Groq Cloud API (Llama 3.3-70b) :Groq/Meta | AI analysis grounded in the real fetched data | [console.groq.com/docs](https://console.groq.com/docs) |
+| Lucide Icons : Lucide Contributors | UI icons | [lucide.dev](https://lucide.dev) |
+| Google Fonts : Google LLC | Fraunces, Instrument Sans, DM Mono | [fonts.google.com](https://fonts.google.com) |
 
 **Other tools:** Express.js, Node.js, PM2, Nginx, Let's Encrypt (Certbot)
 
@@ -50,7 +51,7 @@ Once results load, users can:
 ## Error Handling
 
 - Input is validated (minimum 5 characters, capped at 500, type-checked) before any API call is made
-- Both GitHub and Stack Exchange are fetched in parallel — if one fails, the other still returns results
+- Both GitHub and Stack Exchange are fetched in parallel : if one fails, the other still returns results
 - All external API calls have timeouts (10s for GitHub/Stack Exchange, 60s for Groq) to prevent hanging
 - Loading animation shown during API calls so users know the app is working
 - Empty results show a friendly message instead of a blank section
@@ -67,8 +68,8 @@ The app is secured with a **Let's Encrypt SSL certificate** configured on the lo
 ## Why a Backend?
 
 A Node.js/Express backend was necessary for two reasons:
-1. **Security** — API keys must never be exposed in browser code. The backend acts as a secure proxy.
-2. **CORS** — External APIs block direct browser requests. The server makes all API calls server-side and returns the data safely.
+1. **Security** : API keys must never be exposed in browser code. The backend acts as a secure proxy.
+2. **CORS** : External APIs block direct browser requests. The server makes all API calls server-side and returns the data safely.
 
 ---
 
@@ -116,16 +117,16 @@ curl http://localhost:3000/health
 # Expected: {"status":"ok","timestamp":"..."}
 ```
 
-### Firewall (UFW) — web-01 & web-02
+### Firewall (UFW) : web-01 & web-02
 ```bash
 sudo ufw allow ssh
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow 'Nginx HTTPS'
 sudo ufw enable
 ```
-This blocks direct access to port 3000 — traffic only flows through Nginx.
+This blocks direct access to port 3000 : traffic only flows through Nginx.
 
-### Load Balancer — lb-01 (Nginx, round-robin)
+### Load Balancer : lb-01 (Nginx, round-robin)
 ```nginx
 upstream ideaforge_backend {
     server 54.204.136.7:3000;
@@ -146,13 +147,13 @@ server {
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-### SSL — lb-01
+### SSL : lb-01
 ```bash
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d ideaforge.karega.tech --redirect
 ```
 
-### Firewall (UFW) — lb-01
+### Firewall (UFW) : lb-01
 ```bash
 sudo ufw allow ssh
 sudo ufw allow 'Nginx Full'
@@ -174,7 +175,7 @@ Both servers should respond, confirming traffic is distributed correctly.
 | AI was generating made-up scores | Fetched real GitHub and Stack Overflow data first, then passed it to the AI as context so scores are based on actual evidence |
 | API keys at risk of browser exposure | All API calls moved to the Express backend; keys stored in `.env` and never sent to the frontend |
 | CORS errors on direct browser requests | Express server handles all outgoing API requests server-side, bypassing browser CORS restrictions |
-| App needed to work identically on two servers | Designed to be fully stateless — no sessions or local storage — so either server handles any request independently |
+| App needed to work identically on two servers | Designed to be fully stateless : no sessions or local storage : so either server handles any request independently |
 
 ---
 
@@ -183,8 +184,14 @@ Both servers should respond, confirming traffic is distributed correctly.
 ```
 ideaForge/
 ├── public/index.html    # Frontend (HTML, CSS, JavaScript)
-├── server.js            # Express backend — secure API proxy
+├── server.js            # Express backend : secure API proxy
 ├── .env                 # API keys (not committed)
 ├── .env.example         # Key template
 └── .gitignore
 ```
+
+---
+
+## Demo Video
+
+[paste your video link here]
