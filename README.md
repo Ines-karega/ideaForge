@@ -194,4 +194,4 @@ ideaForge/
 
 ## Demo Video
 
-[paste your video link here]
+link: https://youtu.be/njFXAnOIzho
